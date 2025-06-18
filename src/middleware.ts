@@ -3,11 +3,11 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isHomeRoute = createRouteMatcher(["/"]);
 
-export default clerkMiddleware((auth, req) => {
-
+export default  clerkMiddleware( async(auth, req) => {
+    const { userId } = await  auth();
 
     // if there is user and home route is accessed, redirect to dashboard or any other protected route
-    if ( isHomeRoute(req)) {
+    if (userId && isHomeRoute(req)) {
         return NextResponse.rewrite(new URL("/", req.url));
     }
 });
